@@ -1,6 +1,6 @@
 ﻿namespace CoursesManager.Application.Dtos;
 
-internal class CourseDto
+public class CourseDto
 {
     public string? CourseCode { get; set; }
     public string? Title { get; set; }
