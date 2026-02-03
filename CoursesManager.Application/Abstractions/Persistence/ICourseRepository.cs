@@ -1,5 +1,7 @@
-﻿namespace CoursesManager.Domain.Interfaces;
+﻿using CoursesManager.Domain.Entities;
 
-internal interface ICourseRepository
+namespace CoursesManager.Application.Abstractions.Persistence;
+
+public interface ICourseRepository : IBaseRepository<CourseEntity>
 {
 }
