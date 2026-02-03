@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿namespace CoursesManager.Application.Services;
 
-namespace CoursesManager.Application.Services
+public class CourseService(ICourseRepository courseRepository)
 {
-    internal class CourseService
-    {
-    }
+
+    private readonly ICourseRepository
+
 }

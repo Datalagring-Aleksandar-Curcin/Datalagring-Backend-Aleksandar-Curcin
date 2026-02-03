@@ -1,10 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using CoursesManager.Domain.Entities;
+using CoursesManager.Infrastructure.Data;
 
-namespace CoursesManager.Infrastructure.Repositories
+namespace CoursesManager.Infrastructure.Repositories;
+
+internal class CourseRepository(ApplicationDbContext context) : BaseRepository<CourseEntity>(context)
 {
-    internal class CourseRepository
-    {
-    }
+
+
+
+
 }

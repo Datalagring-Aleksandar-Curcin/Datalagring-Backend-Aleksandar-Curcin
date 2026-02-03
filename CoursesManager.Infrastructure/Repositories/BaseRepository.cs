@@ -1,4 +1,5 @@
 ﻿using CoursesManager.Domain.Entities;
+using CoursesManager.Domain.Interfaces;
 using CoursesManager.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
