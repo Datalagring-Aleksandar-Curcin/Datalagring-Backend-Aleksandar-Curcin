@@ -7,6 +7,8 @@ namespace CoursesManager.Application.Abstractions.Persistence
         Task<TEntity> CreateAsync(TEntity entity, CancellationToken ct = default);
         Task<bool> ExistAsync(Expression<Func<TEntity, bool>> findBy);
 
+        Task<TEntity?> GetOneAsync(Expression<Func<TEntity, bool>> where, CancellationToken ct = default);
+
         Task<IReadOnlyList<TEntity>> GetAllAsync(
         Expression<Func<TEntity, bool>>? where = null,
         Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>>? orderBy = null,
