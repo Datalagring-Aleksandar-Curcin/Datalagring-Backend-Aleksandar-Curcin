@@ -23,5 +23,7 @@ namespace CoursesManager.Application.Abstractions.Persistence
         bool tracking = false,
         CancellationToken ct = default,
         params Expression<Func<TEntity, object>>[] includes);
+
+        Task DeleteAsync(TEntity entity, CancellationToken ct = default);
     }
 }
