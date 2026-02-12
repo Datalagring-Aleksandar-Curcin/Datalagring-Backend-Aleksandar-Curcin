@@ -33,10 +33,10 @@ public class CourseService(ICourseRepository courseRepository)
     public async Task<IReadOnlyList<CourseDto>> GetAllCoursesAsync(CancellationToken ct = default)
     {
         return await _courseRepository.GetAllAsync(
-            select: c => new CourseDto { CourseCode = c.CourseCode, Title = c.Title, Description = c.Description, CreatedAt = c.CreatedAt, RowVersion = c.RowVersion },
+            select: c => new CourseDto(c.CourseCode, c.Title, c.Description, c.CreatedAt, c.UpdatedAt, c.RowVersion),
             orderBy: o => o.OrderByDescending(x => x.CreatedAt),
             ct: ct
-            );
+        );
     }
 
     public async Task<ErrorOr<CourseDto>> UpdateCourseAsync(string courseCode, UpdateCourseDto dto, CancellationToken ct = default)
