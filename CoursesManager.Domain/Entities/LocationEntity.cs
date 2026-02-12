@@ -1,6 +1,6 @@
 ﻿namespace CoursesManager.Domain.Entities;
 
-internal class LocationEntity
+public class LocationEntity
 {
 
     public int Id { get; set; }
