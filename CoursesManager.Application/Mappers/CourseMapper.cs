@@ -5,16 +5,14 @@ namespace CoursesManager.Application.Mappers;
 
 public class CourseMapper
 {
-
-    public static CourseDto ToCourseDto(CourseEntity entity) => new()
-    {
-        CourseCode = entity.CourseCode,
-        Title = entity.Title,
-        Description = entity.Description,
-        CreatedAt = entity.CreatedAt,
-        UpdatedAt = entity.UpdatedAt,
-        RowVersion = entity.RowVersion
-    };
-
-
+    public static CourseDto ToCourseDto(CourseEntity entity) => new
+    (
+        entity.CourseCode,
+        entity.Title,
+        entity.Description,
+        entity.CreatedAt,
+        entity.UpdatedAt,
+        entity.RowVersion
+    );
 }
+
