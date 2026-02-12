@@ -1,5 +1,6 @@
 ﻿using CoursesManager.Application.Abstractions.Persistence;
 using CoursesManager.Application.Common.Errors;
+using CoursesManager.Application.Common.Results;
 using CoursesManager.Application.Dtos;
 using CoursesManager.Application.Mappers;
 using CoursesManager.Domain.Entities;
@@ -53,6 +54,16 @@ public class CourseService(ICourseRepository courseRepository)
 
         await _courseRepository.SaveChangesAsync(ct);
         return CourseMapper.ToCourseDto(course);
+    }
+
+    public async Task<ErrorOr<Deleted>> DeleteCourseAsync(string courseCode, CancellationToken ct = default)
+    {
+        var course = await _courseRepository.GetOneAsync(x => x.CourseCode == courseCode, ct);
+        if (course is null)
+            return Error.NotFound("Course.NotFound", $"Course with {courseCode} was not found.");
+
+        await _courseRepository.DeleteAsync(course, ct);
+        return Result.Deleted;
     }
 
 }
