@@ -1,4 +1,4 @@
-﻿using CoursesManager.Application.Dtos;
+﻿using CoursesManager.Application.Dtos.Courses;
 using CoursesManager.Domain.Entities;
 
 namespace CoursesManager.Application.Mappers;

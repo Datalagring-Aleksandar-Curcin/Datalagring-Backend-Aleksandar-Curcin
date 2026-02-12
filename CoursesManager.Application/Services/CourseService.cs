@@ -1,7 +1,7 @@
 ﻿using CoursesManager.Application.Abstractions.Persistence;
 using CoursesManager.Application.Common.Errors;
 using CoursesManager.Application.Common.Results;
-using CoursesManager.Application.Dtos;
+using CoursesManager.Application.Dtos.Courses;
 using CoursesManager.Application.Mappers;
 using CoursesManager.Domain.Entities;
 

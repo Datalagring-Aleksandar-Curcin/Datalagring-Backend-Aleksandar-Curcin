@@ -16,7 +16,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\CoursesManager.Domain\CoursesManager.Domain.csproj" />
+    <ProjectReference Include="..\CoursesManager.Application\CoursesManager.Application.csproj" />
   </ItemGroup>
 
 </Project>
