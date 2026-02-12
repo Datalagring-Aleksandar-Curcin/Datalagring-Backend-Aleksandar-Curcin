@@ -9,6 +9,12 @@ namespace CoursesManager.Application.Abstractions.Persistence
 
         Task<TEntity?> GetOneAsync(Expression<Func<TEntity, bool>> where, CancellationToken ct = default);
 
+        Task<TEntity?> GetOneAsync(
+        Expression<Func<TEntity, bool>> where,
+        bool tracking = false,
+        CancellationToken ct = default,
+        params Expression<Func<TEntity, object>>[] includes);
+
         Task<IReadOnlyList<TEntity>> GetAllAsync(
         Expression<Func<TEntity, bool>>? where = null,
         Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>>? orderBy = null,
