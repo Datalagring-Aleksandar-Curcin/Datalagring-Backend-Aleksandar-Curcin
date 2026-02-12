@@ -21,4 +21,12 @@ public class CourseService(ICourseRepository courseRepository)
         return CourseMapper.ToCourseDto(savedCourse);
     }
 
+    public async Task<ErrorOr<CourseDto>> GetOneCourseAsync(string courseCode, CancellationToken ct = default)
+    {
+        var course = await _courseRepository.GetOneAsync(x => x.CourseCode == courseCode, ct);
+        return course is not null
+            ? CourseMapper.ToCourseDto(course)
+            : Error.NotFound("Courses.NotFound", $"Course with '{courseCode}' was not found.");
+    }
+
 }
