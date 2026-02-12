@@ -38,4 +38,21 @@ public class CourseService(ICourseRepository courseRepository)
             );
     }
 
+    public async Task<ErrorOr<CourseDto>> UpdateCourseAsync(string courseCode, UpdateCourseDto dto, CancellationToken ct = default)
+    {
+        var course = await _courseRepository.GetOneAsync(x => x.CourseCode == courseCode, ct);
+        if (course is null)
+            return Error.NotFound("Courses.NotFound", $"Courses with '{courseCode}' was not found.");
+
+        if (!course.RowVersion.SequenceEqual(dto.RowVersion))
+            return Error.Conflict("Courses.Conflict", "Updated by another user. Try again.");
+
+        course.Title = dto.Title;
+        course.Description = dto.Description;
+        course.UpdatedAt = DateTime.Now;
+
+        await _courseRepository.SaveChangesAsync(ct);
+        return CourseMapper.ToCourseDto(course);
+    }
+
 }
