@@ -1,6 +1,17 @@
-﻿namespace CoursesManager.Application.Dtos.Locations;
+﻿using CoursesManager.Application.Dtos.Courses;
+using CoursesManager.Application.Dtos.Locations;
 
-public record LocationDto
+namespace CoursesManager.Application.Dtos.CourseSessions;
+
+public record CourseSessionDto
 (
-    string Name
+    int Id,
+    DateTime StartDate,
+    DateTime EndDate,
+    int MaxParticipants,
+    DateTime CreatedAt,
+    DateTime UpdatedAt,
+    CourseDto Course,
+    LocationDto Location
 );
+
