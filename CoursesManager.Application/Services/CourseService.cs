@@ -50,7 +50,7 @@ public class CourseService(ICourseRepository courseRepository)
 
         course.Title = dto.Title;
         course.Description = dto.Description;
-        course.UpdatedAt = DateTime.Now;
+        course.UpdatedAt = DateTime.UtcNow;
 
         await _courseRepository.SaveChangesAsync(ct);
         return CourseMapper.ToCourseDto(course);
