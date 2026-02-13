@@ -91,4 +91,11 @@ public class BaseRepository<TEntity> : IBaseRepository<TEntity> where TEntity : 
 
         return await query.Select(select).ToListAsync(ct);
     }
+
+    public virtual async Task DeleteAsync(TEntity entity, CancellationToken ct = default)
+    {
+        ArgumentNullException.ThrowIfNull(entity, nameof(entity));
+        _table.Remove(entity);
+        await _context.SaveChangesAsync(ct);
+    }
 }
