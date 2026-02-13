@@ -49,4 +49,9 @@ public class BaseRepository<TEntity> : IBaseRepository<TEntity> where TEntity : 
             .Select(select)
             .FirstOrDefaultAsync(ct);
     }
+
+    public virtual async Task<TEntity?> GetOneAsync(Expression<Func<TEntity, bool>> where, CancellationToken ct = default)
+    {
+        return await _table.FirstOrDefaultAsync(where, ct);
+    }
 }
