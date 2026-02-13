@@ -1,5 +1,7 @@
+using CoursesManager.Application.Abstractions.Persistence;
 using CoursesManager.Application.Services;
 using CoursesManager.Infrastructure.Data;
+using CoursesManager.Infrastructure.Persistence.Repositories;
 using EntityFramework.Exceptions.SqlServer;
 using Microsoft.EntityFrameworkCore;
 
@@ -10,6 +12,11 @@ builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlSer
 //Services
 builder.Services.AddScoped<CourseService>();
 builder.Services.AddScoped<CourseSessionService>();
+
+
+//Repos
+builder.Services.AddScoped<ICourseRepository, CourseRepository>();
+builder.Services.AddScoped<ICourseSessionRepository, CourseSessionRepository>();
 
 
 builder.Services.AddOpenApi();
