@@ -1,10 +1,8 @@
-﻿
-
-using CoursesManager.Domain.Entities;
+﻿using CoursesManager.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace CoursesManager.Infrastructure.Data.Configurations;
+namespace CoursesManager.Infrastructure.Persistence.Configurations;
 
 public class CourseConfiguration : IEntityTypeConfiguration<CourseEntity>
 {

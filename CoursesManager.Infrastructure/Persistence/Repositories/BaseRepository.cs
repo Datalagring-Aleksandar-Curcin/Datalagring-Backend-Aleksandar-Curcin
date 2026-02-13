@@ -4,7 +4,7 @@ using CoursesManager.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
 
-namespace CoursesManager.Infrastructure.Repositories;
+namespace CoursesManager.Infrastructure.Persistence.Repositories;
 
 public class BaseRepository<TEntity> : IBaseRepository<TEntity> where TEntity : class
 {
