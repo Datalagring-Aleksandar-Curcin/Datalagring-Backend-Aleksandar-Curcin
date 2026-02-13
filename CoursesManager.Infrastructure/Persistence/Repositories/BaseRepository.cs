@@ -36,4 +36,17 @@ public class BaseRepository<TEntity> : IBaseRepository<TEntity> where TEntity : 
         return await BuildQuery(tracking, includes)
             .FirstOrDefaultAsync(where, ct);
     }
+
+    public virtual async Task<TSelect?> GetOneAsync<TSelect>(
+        Expression<Func<TEntity, bool>> where,
+        Expression<Func<TEntity, TSelect>> select,
+        bool tracking = false,
+        CancellationToken ct = default)
+    {
+        return await _table
+            .AsNoTracking()
+            .Where(where)
+            .Select(select)
+            .FirstOrDefaultAsync(ct);
+    }
 }
