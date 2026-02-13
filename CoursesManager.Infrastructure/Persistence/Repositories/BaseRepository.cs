@@ -27,4 +27,13 @@ public class BaseRepository<TEntity> : IBaseRepository<TEntity> where TEntity : 
         return entity;
     }
 
+    public virtual async Task<TEntity?> GetOneAsync(
+       Expression<Func<TEntity, bool>> where,
+       bool tracking = false,
+       CancellationToken ct = default,
+       params Expression<Func<TEntity, object>>[] includes)
+    {
+        return await BuildQuery(tracking, includes)
+            .FirstOrDefaultAsync(where, ct);
+    }
 }
