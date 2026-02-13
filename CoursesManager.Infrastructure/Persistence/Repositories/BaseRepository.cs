@@ -98,4 +98,11 @@ public class BaseRepository<TEntity> : IBaseRepository<TEntity> where TEntity : 
         _table.Remove(entity);
         await _context.SaveChangesAsync(ct);
     }
+
+    public virtual async Task<TEntity> UpdateAsync(TEntity entity, CancellationToken ct = default)
+    {
+        _table.Update(entity);
+        await _context.SaveChangesAsync(ct);
+        return entity;
+    }
 }
