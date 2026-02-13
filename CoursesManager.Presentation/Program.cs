@@ -26,6 +26,15 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddValidation();
 
+builder.Services.AddProblemDetails(options =>
+{
+    options.CustomizeProblemDetails = context =>
+    {
+        context.ProblemDetails.Extensions["requestId"] = context.HttpContext.TraceIdentifier;
+        context.ProblemDetails.Extensions["support"] = "support@domain.com";
+    };
+});
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
