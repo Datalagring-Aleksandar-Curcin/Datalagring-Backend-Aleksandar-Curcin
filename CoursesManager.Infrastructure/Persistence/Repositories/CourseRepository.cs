@@ -1,12 +1,10 @@
-﻿using CoursesManager.Domain.Entities;
+﻿using CoursesManager.Application.Abstractions.Persistence;
+using CoursesManager.Domain.Entities;
 using CoursesManager.Infrastructure.Data;
 
 namespace CoursesManager.Infrastructure.Persistence.Repositories;
 
-internal class CourseRepository(ApplicationDbContext context) : BaseRepository<CourseEntity>(context)
+public class CourseRepository(ApplicationDbContext context) : BaseRepository<CourseEntity>(context), ICourseRepository
 {
-
-
-
 
 }
