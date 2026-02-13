@@ -19,6 +19,12 @@ public class BaseRepository<TEntity> : IBaseRepository<TEntity> where TEntity : 
     {
         return await _table.AnyAsync(findBy);
     }
-
+    public virtual async Task<TEntity> CreateAsync(TEntity entity, CancellationToken ct = default)
+    {
+        ArgumentNullException.ThrowIfNull(entity, nameof(entity));
+        _table.Add(entity);
+        await _context.SaveChangesAsync(ct);
+        return entity;
+    }
 
 }
