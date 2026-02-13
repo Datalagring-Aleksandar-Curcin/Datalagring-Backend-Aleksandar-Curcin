@@ -105,4 +105,9 @@ public class BaseRepository<TEntity> : IBaseRepository<TEntity> where TEntity : 
         await _context.SaveChangesAsync(ct);
         return entity;
     }
+
+    public virtual async Task<int> SaveChangesAsync(CancellationToken ct = default)
+    {
+        return await _context.SaveChangesAsync(ct);
+    }
 }
