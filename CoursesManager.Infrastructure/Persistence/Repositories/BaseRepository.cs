@@ -72,4 +72,23 @@ public class BaseRepository<TEntity> : IBaseRepository<TEntity> where TEntity : 
 
         return await query.ToListAsync(ct);
     }
+
+    public virtual async Task<IReadOnlyList<TSelect>> GetAllAsync<TSelect>(
+    Expression<Func<TEntity, TSelect>> select,
+    Expression<Func<TEntity, bool>>? where = null,
+    Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>>? orderBy = null,
+    bool tracking = false,
+    CancellationToken ct = default,
+    params Expression<Func<TEntity, object>>[] includes)
+    {
+        var query = BuildQuery(tracking, includes);
+
+        if (where is not null)
+            query = query.Where(where);
+
+        if (orderBy is not null)
+            query = orderBy(query);
+
+        return await query.Select(select).ToListAsync(ct);
+    }
 }
