@@ -110,4 +110,14 @@ public class BaseRepository<TEntity> : IBaseRepository<TEntity> where TEntity : 
     {
         return await _context.SaveChangesAsync(ct);
     }
+
+    private IQueryable<TEntity> BuildQuery(bool tracking, params Expression<Func<TEntity, object>>[] includes)
+    {
+        var query = tracking ? _table.AsTracking() : _table.AsNoTracking();
+
+        foreach (var include in includes)
+            query = query.Include(include);
+
+        return query;
+    }
 }
