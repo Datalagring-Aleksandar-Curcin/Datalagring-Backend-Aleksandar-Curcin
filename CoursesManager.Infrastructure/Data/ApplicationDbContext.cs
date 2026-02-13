@@ -1,6 +1,4 @@
-﻿
-
-using CoursesManager.Domain.Entities;
+﻿using CoursesManager.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace CoursesManager.Infrastructure.Data;
@@ -8,6 +6,8 @@ namespace CoursesManager.Infrastructure.Data;
 public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : DbContext(options)
 {
     public DbSet<CourseEntity> Courses { get; set; }
+    public DbSet<CourseSessionEntity> CourseSessions { get; set; }
+
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
