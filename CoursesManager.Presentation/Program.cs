@@ -1,12 +1,15 @@
+using CoursesManager.Application.Services;
 using CoursesManager.Infrastructure.Data;
+using EntityFramework.Exceptions.SqlServer;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("LocalDbFile")).UseExceptionProcessor());
 
-
-
+//Services
+builder.Services.AddScoped<CourseService>();
+builder.Services.AddScoped<CourseSessionService>();
 
 
 builder.Services.AddOpenApi();
