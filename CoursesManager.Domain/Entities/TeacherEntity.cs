@@ -13,7 +13,7 @@ public class TeacherEntity
 
     
 
-    public ICollection<InstanceTeacherEntity> InstanseTeacher { get; set; } = [];
+    public ICollection<InstanceTeacherEntity> InstanceTeachers { get; set; } = [];
 
 
 }
