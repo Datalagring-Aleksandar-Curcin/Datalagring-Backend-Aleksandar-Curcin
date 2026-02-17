@@ -1,5 +1,20 @@
-﻿namespace CoursesManager.Infrastructure.Persistence.Configurations;
+﻿using CoursesManager.Domain.Entities;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-internal class LocationConfiguration
+namespace CoursesManager.Infrastructure.Persistence.Configurations;
+
+internal class LocationConfiguration : IEntityTypeConfiguration<LocationEntity>
 {
+    public void Configure(EntityTypeBuilder<LocationEntity> builder)
+    {
+        builder.HasKey(e => e.Id);
+
+        builder.Property(e => e.Name)
+            .IsRequired()
+            .HasMaxLength(50);
+
+        builder.HasIndex(e => e.Name)
+            .IsUnique();
+    }
 }
