@@ -15,5 +15,13 @@ public class CourseSessionConfiguration : IEntityTypeConfiguration<CourseSession
 
         builder.Property(e => e.EndDate)
             .HasColumnType("datetime2(0)");
+
+        builder.ToTable("CourseSessions", t =>
+        {
+            t.HasCheckConstraint(
+                $"CK_CourseSession_{nameof(CourseSessionEntity.MaxParticipants)}",
+                $"[{nameof(CourseSessionEntity.MaxParticipants)}] > 0"
+            );
+        });
     }
 }
