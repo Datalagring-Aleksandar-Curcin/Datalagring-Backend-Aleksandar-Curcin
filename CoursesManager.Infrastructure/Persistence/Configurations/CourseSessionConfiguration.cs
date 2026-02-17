@@ -36,5 +36,10 @@ public class CourseSessionConfiguration : IEntityTypeConfiguration<CourseSession
             .WithMany(c => c.CourseSessions)
             .HasForeignKey(cs => cs.CourseId)
             .OnDelete(DeleteBehavior.Restrict);
+
+        builder.HasOne(cs => cs.Location)
+            .WithMany(l => l.CourseSessions)
+            .HasForeignKey(cs => cs.LocationId)
+            .OnDelete(DeleteBehavior.Restrict);
     }
 }
