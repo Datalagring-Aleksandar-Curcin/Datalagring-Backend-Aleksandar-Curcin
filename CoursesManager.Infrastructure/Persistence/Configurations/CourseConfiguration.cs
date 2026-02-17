@@ -9,5 +9,9 @@ public class CourseConfiguration : IEntityTypeConfiguration<CourseEntity>
     public void Configure(EntityTypeBuilder<CourseEntity> builder)
     {
         builder.HasKey(e => e.CourseId);
+
+        builder.HasIndex(e => e.CourseCode)
+            .IsUnique()
+            .HasDatabaseName("UQ_Course_CourseCode");
     }
 }
