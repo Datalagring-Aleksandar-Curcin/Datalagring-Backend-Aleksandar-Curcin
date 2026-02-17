@@ -48,9 +48,18 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 
+//Cors
 
+app.UseExceptionHandler();
 
+#region Courses
+var courses = app.MapGroup("/api/courses").WithTags("Courses");
 
+courses.MapGet("/", async (CourseService courseService, CancellationToken ct) =>
+{
+    var result = await courseService.GetAllCoursesAsync(ct);
+    return Results.Ok(result);
+});
 
 
 
