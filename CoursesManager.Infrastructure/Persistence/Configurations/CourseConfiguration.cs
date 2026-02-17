@@ -13,5 +13,9 @@ public class CourseConfiguration : IEntityTypeConfiguration<CourseEntity>
         builder.HasIndex(e => e.CourseCode)
             .IsUnique()
             .HasDatabaseName("UQ_Course_CourseCode");
+
+        builder.Property(e => e.Title)
+            .IsRequired()
+            .HasMaxLength(50);
     }
 }
