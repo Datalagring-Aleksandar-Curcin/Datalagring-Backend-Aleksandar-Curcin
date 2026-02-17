@@ -23,5 +23,9 @@ public class CourseSessionConfiguration : IEntityTypeConfiguration<CourseSession
                 $"[{nameof(CourseSessionEntity.MaxParticipants)}] > 0"
             );
         });
+
+        builder.Property(e => e.CreatedAt)
+            .HasColumnType("datetime2(0)")
+            .HasDefaultValueSql("SYSUTCDATETIME()");
     }
 }
