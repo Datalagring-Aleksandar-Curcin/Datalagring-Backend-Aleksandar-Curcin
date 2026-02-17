@@ -9,5 +9,8 @@ public class CourseSessionConfiguration : IEntityTypeConfiguration<CourseSession
     public void Configure(EntityTypeBuilder<CourseSessionEntity> builder)
     {
         builder.HasKey(e => e.Id);
+
+        builder.Property(e => e.StartDate)
+            .HasColumnType("datetime2(0)");
     }
 }
