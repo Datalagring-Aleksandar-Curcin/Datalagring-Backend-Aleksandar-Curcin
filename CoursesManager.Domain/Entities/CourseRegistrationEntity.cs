@@ -6,7 +6,7 @@ public class CourseRegistrationEntity
     public DateTime RegistrationDate { get; set; }
     public DateTime UpdatedAt { get; set; }
 
-    public bool IsCanceled { get; set; }
+    
 
 
     public int CourseSessionId { get; set; }
