@@ -12,5 +12,8 @@ public class CourseSessionConfiguration : IEntityTypeConfiguration<CourseSession
 
         builder.Property(e => e.StartDate)
             .HasColumnType("datetime2(0)");
+
+        builder.Property(e => e.EndDate)
+            .HasColumnType("datetime2(0)");
     }
 }
