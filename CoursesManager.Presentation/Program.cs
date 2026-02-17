@@ -101,6 +101,21 @@ courses.MapDelete("/{courseCode}", async (string courseCode, CourseService cours
 #endregion
 
 
+#region CourseSessions
+
+var coursesSessions = app.MapGroup("/api/course-sessions").WithTags("Course Sessions");
+
+coursesSessions.MapGet("/{id}", async (int id, CourseSessionService service, CancellationToken ct) =>
+{
+    var result = await service.GetOneCourseSessionAsync(id, ct);
+    return result.Match(
+        cs => Results.Ok(cs),
+        errors => errors.ToProblemDetails()
+    );
+});
+
+
+#endregion
 
 
 
