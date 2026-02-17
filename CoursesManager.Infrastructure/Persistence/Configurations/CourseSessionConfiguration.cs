@@ -31,5 +31,10 @@ public class CourseSessionConfiguration : IEntityTypeConfiguration<CourseSession
         builder.Property(e => e.UpdatedAt)
             .HasColumnType("datetime2(0)")
             .HasDefaultValueSql("SYSUTCDATETIME()");
+
+        builder.HasOne(cs => cs.Course)
+            .WithMany(c => c.CourseSessions)
+            .HasForeignKey(cs => cs.CourseId)
+            .OnDelete(DeleteBehavior.Restrict);
     }
 }
