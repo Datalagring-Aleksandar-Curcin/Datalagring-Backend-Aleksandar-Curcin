@@ -16,5 +16,13 @@ internal class LocationConfiguration : IEntityTypeConfiguration<LocationEntity>
 
         builder.HasIndex(e => e.Name)
             .IsUnique();
+
+        builder.Property(e => e.CreatedAt)
+            .HasColumnType("datetime2(0)")
+            .HasDefaultValueSql("SYSUTCDATETIME()");
+
+        builder.Property(e => e.UpdatedAt)
+            .HasColumnType("datetime2(0)")
+            .HasDefaultValueSql("SYSUTCDATETIME()");
     }
 }
