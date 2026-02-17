@@ -21,5 +21,9 @@ public class CourseConfiguration : IEntityTypeConfiguration<CourseEntity>
         builder.Property(e => e.Description)
             .IsRequired()
             .HasMaxLength(200);
+
+        builder.Property(e => e.CreatedAt)
+            .HasColumnType("datetime2(0)")
+            .HasDefaultValueSql("SYSUTCDATETIME()");
     }
 }
