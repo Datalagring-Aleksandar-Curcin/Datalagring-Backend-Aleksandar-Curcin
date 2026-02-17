@@ -47,7 +47,7 @@ namespace CoursesManager.Infrastructure.Data.Migrations
 
                     b.HasKey("CourseCode");
 
-                    b.ToTable("Courses");
+                    b.ToTable("Courses", (string)null);
                 });
 #pragma warning restore 612, 618
         }
