@@ -1,5 +1,19 @@
 ﻿namespace CoursesManager.Domain.Entities;
 
-internal class TeacherEntity
+public class TeacherEntity
 {
+    public int Id { get; set; }
+    
+    public string FirstName { get; set; } = null!;
+    public string LastName { get; set; } = null!;
+    public string Expertise { get; set; } = null!;
+
+    public DateTime CreatedAt { get; set; }
+    public DateTime UpdatedAt { get; set; }
+
+    public bool IsDeleted { get; set; }
+
+    public ICollection<InstanceTeacherEntity> InstanseTeacher { get; set; } = [];
+
+
 }
