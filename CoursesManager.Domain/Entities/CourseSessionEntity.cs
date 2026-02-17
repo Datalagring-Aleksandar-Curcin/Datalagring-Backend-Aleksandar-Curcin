@@ -16,4 +16,9 @@ public class CourseSessionEntity
 
     public int LocationId { get; set; }
     public LocationEntity Location { get; set; } = null!;
+
+
+    public ICollection<CourseRegistrationEntity> CourseRegistrations { get; set; } = [];
+
+    public ICollection<InstanceTeacherEntity> InstanceTeachers { get; set; } = [];
 }
