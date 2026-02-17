@@ -25,5 +25,9 @@ public class CourseConfiguration : IEntityTypeConfiguration<CourseEntity>
         builder.Property(e => e.CreatedAt)
             .HasColumnType("datetime2(0)")
             .HasDefaultValueSql("SYSUTCDATETIME()");
+
+        builder.Property(e => e.UpdatedAt)
+           .HasColumnType("datetime2(0)")
+           .HasDefaultValueSql("SYSUTCDATETIME()");
     }
 }
