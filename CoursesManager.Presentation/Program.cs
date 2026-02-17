@@ -1,7 +1,9 @@
 using CoursesManager.Application.Abstractions.Persistence;
+using CoursesManager.Application.Dtos.Courses;
 using CoursesManager.Application.Services;
 using CoursesManager.Infrastructure.Data;
 using CoursesManager.Infrastructure.Persistence.Repositories;
+using CoursesManager.Presentation.Extensions;
 using EntityFramework.Exceptions.SqlServer;
 using Microsoft.EntityFrameworkCore;
 
@@ -60,6 +62,43 @@ courses.MapGet("/", async (CourseService courseService, CancellationToken ct) =>
     var result = await courseService.GetAllCoursesAsync(ct);
     return Results.Ok(result);
 });
+courses.MapGet("/{courseCode}", async (string courseCode, CourseService courseService, CancellationToken ct) =>
+{
+    var result = await courseService.GetOneCourseAsync(courseCode, ct);
+    return result.Match(
+        course => Results.Ok(course),
+        errors => errors.ToProblemDetails()
+    );
+});
+
+courses.MapPost("/", async (CreateCourseDto dto, CourseService courseService, CancellationToken ct) =>
+{
+    var result = await courseService.CreateCourseAsync(dto, ct);
+    return result.Match(
+        course => Results.Created($"/api/courses/{course.CourseCode}", course),
+        errors => errors.ToProblemDetails()
+    );
+});
+
+courses.MapPut("/{courseCode}", async (string courseCode, UpdateCourseDto dto, CourseService courseService, CancellationToken ct) =>
+{
+    var result = await courseService.UpdateCourseAsync(courseCode, dto, ct);
+    return result.Match(
+        course => Results.Ok(course),
+        errors => errors.ToProblemDetails()
+    );
+});
+
+courses.MapDelete("/{courseCode}", async (string courseCode, CourseService courseService, CancellationToken ct) =>
+{
+    var result = await courseService.DeleteCourseAsync(courseCode, ct);
+    return result.Match(
+        _ => Results.NoContent(),
+        errors => errors.ToProblemDetails()
+    );
+});
+
+#endregion
 
 
 
