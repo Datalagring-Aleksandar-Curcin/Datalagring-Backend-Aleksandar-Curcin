@@ -17,7 +17,7 @@ internal class InstanceTeacherConfiguration : IEntityTypeConfiguration<InstanceT
             .HasForeignKey(x => x.CourseSessionId)
             .OnDelete(DeleteBehavior.Restrict);
 
-        builder.HasOne(x => x.Teacher)
+        builder.HasOne(x => x.Teachers)
             .WithMany(t => t.InstanceTeachers)
             .HasForeignKey(x => x.TeacherId)
             .OnDelete(DeleteBehavior.Restrict);

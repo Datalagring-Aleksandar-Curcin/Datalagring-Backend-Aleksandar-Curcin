@@ -6,5 +6,5 @@ public class InstanceTeacherEntity
     public CourseSessionEntity CourseSessions { get; set; } = null!;
 
     public int TeacherId { get; set; }
-    public TeacherEntity Teacher { get; set; } = null!;
+    public TeacherEntity Teachers { get; set; } = null!;
 }
