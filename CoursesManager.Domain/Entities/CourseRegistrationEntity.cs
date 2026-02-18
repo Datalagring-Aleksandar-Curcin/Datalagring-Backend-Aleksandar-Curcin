@@ -10,11 +10,11 @@ public class CourseRegistrationEntity
 
 
     public int CourseSessionId { get; set; }
-    public CourseSessionEntity CourseSession { get; set; } = null!;
+    public CourseSessionEntity CourseSessions { get; set; } = null!;
 
 
     public int ParticipantId { get; set; }
-    public ParticipantEntity Participant { get; set; } = null!;
+    public ParticipantEntity Participants { get; set; } = null!;
 
 
     public int CourseStatusId { get; set; }
