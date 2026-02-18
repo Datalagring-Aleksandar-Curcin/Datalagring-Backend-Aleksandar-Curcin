@@ -12,7 +12,7 @@ internal class InstanceTeacherConfiguration : IEntityTypeConfiguration<InstanceT
 
         builder.HasKey(x => new { x.CourseSessionId, x.TeacherId });
 
-        builder.HasOne(x => x.CourseSession)
+        builder.HasOne(x => x.CourseSessions)
             .WithMany(cs => cs.InstanceTeachers)
             .HasForeignKey(x => x.CourseSessionId)
             .OnDelete(DeleteBehavior.Restrict);
