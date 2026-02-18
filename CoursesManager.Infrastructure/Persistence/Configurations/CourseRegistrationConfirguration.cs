@@ -21,12 +21,12 @@ internal class CourseRegistrationConfirguration : IEntityTypeConfiguration<Cours
             .HasDefaultValueSql("SYSUTCDATETIME()");
 
 
-        builder.HasOne(x => x.Participant)
+        builder.HasOne(x => x.Participants)
             .WithMany(p => p.CourseRegistrations)
             .HasForeignKey(x => x.ParticipantId)
             .OnDelete(DeleteBehavior.Restrict);
 
-        builder.HasOne(x => x.CourseSession)
+        builder.HasOne(x => x.CourseSessions)
             .WithMany(cs => cs.CourseRegistrations)
             .HasForeignKey(x => x.CourseSessionId)
             .OnDelete(DeleteBehavior.Restrict);
