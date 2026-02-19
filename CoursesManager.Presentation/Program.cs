@@ -157,7 +157,7 @@ courseSessions.MapDelete("/{id:int}", async (int id, CourseSessionService servic
 
 
 
-#region
+#region Locations
 
 var locations = app.MapGroup("/api/locations").WithTags("Locations");
 
