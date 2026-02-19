@@ -1,5 +1,6 @@
 using CoursesManager.Application.Abstractions.Persistence;
 using CoursesManager.Application.Dtos.Courses;
+using CoursesManager.Application.Dtos.CourseSessions;
 using CoursesManager.Application.Dtos.Locations;
 using CoursesManager.Application.Services;
 using CoursesManager.Infrastructure.Data;
@@ -105,9 +106,16 @@ courses.MapDelete("/{courseCode}", async (string courseCode, CourseService cours
 
 #region CourseSessions
 
-var coursesSessions = app.MapGroup("/api/course-sessions").WithTags("Course Sessions");
+var courseSessions = app.MapGroup("/api/course-sessions")
+    .WithTags("Course Sessions");
 
-coursesSessions.MapGet("/{id}", async (int id, CourseSessionService service, CancellationToken ct) =>
+courseSessions.MapGet("/", async (CourseSessionService service, CancellationToken ct) =>
+{
+    var result = await service.GetAllCourseSessionsAsync(ct);
+    return Results.Ok(result);
+});
+
+courseSessions.MapGet("/{id:int}", async (int id, CourseSessionService service, CancellationToken ct) =>
 {
     var result = await service.GetOneCourseSessionAsync(id, ct);
     return result.Match(
@@ -115,6 +123,34 @@ coursesSessions.MapGet("/{id}", async (int id, CourseSessionService service, Can
         errors => errors.ToProblemDetails()
     );
 });
+
+courseSessions.MapPost("/", async (CreateCourseSessionDto dto, CourseSessionService service, CancellationToken ct) =>
+{
+    var result = await service.CreateCourseSessionAsync(dto, ct);
+    return result.Match(
+        cs => Results.Created($"/api/course-sessions/{cs.Id}", cs),
+        errors => errors.ToProblemDetails()
+    );
+});
+
+courseSessions.MapPut("/{id:int}", async (int id, UpdateCourseSessionDto dto, CourseSessionService service, CancellationToken ct) =>
+{
+    var result = await service.UpdateCourseSessionAsync(id, dto, ct);
+    return result.Match(
+        cs => Results.Ok(cs),
+        errors => errors.ToProblemDetails()
+    );
+});
+
+courseSessions.MapDelete("/{id:int}", async (int id, CourseSessionService service, CancellationToken ct) =>
+{
+    var result = await service.DeleteCourseSessionAsync(id, ct);
+    return result.Match(
+        _ => Results.NoContent(),
+        errors => errors.ToProblemDetails()
+    );
+});
+
 
 
 #endregion
