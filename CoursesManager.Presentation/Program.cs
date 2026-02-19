@@ -2,6 +2,7 @@ using CoursesManager.Application.Abstractions.Persistence;
 using CoursesManager.Application.Dtos.Courses;
 using CoursesManager.Application.Dtos.CourseSessions;
 using CoursesManager.Application.Dtos.Locations;
+using CoursesManager.Application.Dtos.Participants;
 using CoursesManager.Application.Dtos.Teachers;
 using CoursesManager.Application.Services;
 using CoursesManager.Infrastructure.Data;
@@ -19,12 +20,14 @@ builder.Services.AddScoped<CourseService>();
 builder.Services.AddScoped<CourseSessionService>();
 builder.Services.AddScoped<LocationService>();
 builder.Services.AddScoped<TeacherService>();
+builder.Services.AddScoped<ParticipantService>();
 
 //Repos
 builder.Services.AddScoped<ICourseRepository, CourseRepository>();
 builder.Services.AddScoped<ICourseSessionRepository, CourseSessionRepository>();
 builder.Services.AddScoped<ILocationRepository, LocationRepository>();
 builder.Services.AddScoped<ITeacherRepository, TeacherRepository>();
+builder.Services.AddScoped<IParticipantRepository, ParticipantRepository>();
 
 
 builder.Services.AddOpenApi();
@@ -45,7 +48,7 @@ builder.Services.AddProblemDetails(options =>
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
+
 if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
@@ -255,6 +258,54 @@ teachers.MapDelete("/{id:int}", async (int id, TeacherService service, Cancellat
     );
 });
 
+
+#endregion
+
+#region Participants
+
+var participants = app.MapGroup("/api/participants").WithTags("Participants");
+
+participants.MapGet("/", async (ParticipantService service, CancellationToken ct) =>
+{
+    var result = await service.GetAllParticipantsAsync(ct);
+    return Results.Ok(result);
+});
+
+participants.MapGet("/{id:int}", async (int id, ParticipantService service, CancellationToken ct) =>
+{
+    var result = await service.GetOneParticipantAsync(id, ct);
+    return result.Match(
+        p => Results.Ok(p),
+        errors => errors.ToProblemDetails()
+    );
+});
+
+participants.MapPost("/", async (CreateParticipantDto dto, ParticipantService service, CancellationToken ct) =>
+{
+    var result = await service.CreateParticipantAsync(dto, ct);
+    return result.Match(
+        p => Results.Created($"/api/participants/{p.Id}", p),
+        errors => errors.ToProblemDetails()
+    );
+});
+
+participants.MapPut("/{id:int}", async (int id, UpdateParticipantDto dto, ParticipantService service, CancellationToken ct) =>
+{
+    var result = await service.UpdateParticipantAsync(id, dto, ct);
+    return result.Match(
+        p => Results.Ok(p),
+        errors => errors.ToProblemDetails()
+    );
+});
+
+participants.MapDelete("/{id:int}", async (int id, ParticipantService service, CancellationToken ct) =>
+{
+    var result = await service.DeleteParticipantAsync(id, ct);
+    return result.Match(
+        _ => Results.NoContent(),
+        errors => errors.ToProblemDetails()
+    );
+});
 
 #endregion
 
