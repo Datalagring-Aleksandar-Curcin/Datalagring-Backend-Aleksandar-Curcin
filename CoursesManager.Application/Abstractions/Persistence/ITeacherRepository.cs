@@ -2,6 +2,6 @@
 
 namespace CoursesManager.Application.Abstractions.Persistence;
 
-internal interface ITeacherRepository : IBaseRepository<TeacherEntity>
+public interface ITeacherRepository : IBaseRepository<TeacherEntity>
 {
 }
