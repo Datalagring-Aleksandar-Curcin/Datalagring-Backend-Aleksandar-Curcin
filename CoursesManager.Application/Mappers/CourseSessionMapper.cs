@@ -26,7 +26,10 @@ public class CourseSessionMapper
                 cs.Course.RowVersion
             ),
             new LocationDto(
-                cs.Location.Name
+                cs.Location.Id,
+                cs.Location.Name,
+                cs.Location.CreatedAt,
+                cs.Location.UpdatedAt
             )
         );
 
@@ -48,7 +51,14 @@ public class CourseSessionMapper
             entity.Course.UpdatedAt,
             entity.Course.RowVersion
         ),
-        new LocationDto(entity.Location.Name)
+        new LocationDto(
+            entity.Location.Id,
+            entity.Location.Name,
+            entity.Location.CreatedAt,
+            entity.Location.UpdatedAt
+            
+            
+        )
     );
 
 }
