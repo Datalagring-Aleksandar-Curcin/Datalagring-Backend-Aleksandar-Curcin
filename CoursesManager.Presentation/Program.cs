@@ -2,6 +2,7 @@ using CoursesManager.Application.Abstractions.Persistence;
 using CoursesManager.Application.Dtos.Courses;
 using CoursesManager.Application.Dtos.CourseSessions;
 using CoursesManager.Application.Dtos.Locations;
+using CoursesManager.Application.Dtos.Teachers;
 using CoursesManager.Application.Services;
 using CoursesManager.Infrastructure.Data;
 using CoursesManager.Infrastructure.Persistence.Repositories;
@@ -17,11 +18,13 @@ builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlSer
 builder.Services.AddScoped<CourseService>();
 builder.Services.AddScoped<CourseSessionService>();
 builder.Services.AddScoped<LocationService>();
+builder.Services.AddScoped<TeacherService>();
 
 //Repos
 builder.Services.AddScoped<ICourseRepository, CourseRepository>();
 builder.Services.AddScoped<ICourseSessionRepository, CourseSessionRepository>();
 builder.Services.AddScoped<ILocationRepository, LocationRepository>();
+builder.Services.AddScoped<ITeacherRepository, TeacherRepository>();
 
 
 builder.Services.AddOpenApi();
@@ -156,7 +159,6 @@ courseSessions.MapDelete("/{id:int}", async (int id, CourseSessionService servic
 #endregion
 
 
-
 #region Locations
 
 var locations = app.MapGroup("/api/locations").WithTags("Locations");
@@ -203,6 +205,55 @@ locations.MapDelete("/{id:int}", async (int id, LocationService service, Cancell
     );
 });
 
+
+
+#endregion
+
+#region Teachers
+
+var teachers = app.MapGroup("/api/teachers").WithTags("Teachers");
+
+teachers.MapGet("/", async (TeacherService service, CancellationToken ct) =>
+{
+    var result = await service.GetAllTeachersAsync(ct);
+    return Results.Ok(result);
+});
+
+teachers.MapGet("/{id:int}", async (int id, TeacherService service, CancellationToken ct) =>
+{
+    var result = await service.GetOneTeacherAsync(id, ct);
+    return result.Match(
+        teacher => Results.Ok(teacher),
+        errors => errors.ToProblemDetails()
+    );
+});
+
+teachers.MapPost("/", async (CreateTeacherDto dto, TeacherService service, CancellationToken ct) =>
+{
+    var result = await service.CreateTeacherAsync(dto, ct);
+    return result.Match(
+        teacher => Results.Created($"/api/teachers/{teacher.Id}", teacher),
+        errors => errors.ToProblemDetails()
+    );
+});
+
+teachers.MapPut("/{id:int}", async (int id, UpdateTeacherDto dto, TeacherService service, CancellationToken ct) =>
+{
+    var result = await service.UpdateTeacherAsync(id, dto, ct);
+    return result.Match(
+        teacher => Results.Ok(teacher),
+        errors => errors.ToProblemDetails()
+    );
+});
+
+teachers.MapDelete("/{id:int}", async (int id, TeacherService service, CancellationToken ct) =>
+{
+    var result = await service.DeleteTeacherAsync(id, ct);
+    return result.Match(
+        _ => Results.NoContent(),
+        errors => errors.ToProblemDetails()
+    );
+});
 
 
 #endregion
