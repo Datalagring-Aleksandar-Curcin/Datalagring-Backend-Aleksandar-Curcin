@@ -1,5 +1,6 @@
 using CoursesManager.Application.Abstractions.Persistence;
 using CoursesManager.Application.Dtos.Courses;
+using CoursesManager.Application.Dtos.Locations;
 using CoursesManager.Application.Services;
 using CoursesManager.Infrastructure.Data;
 using CoursesManager.Infrastructure.Persistence.Repositories;
@@ -14,11 +15,12 @@ builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlSer
 //Services
 builder.Services.AddScoped<CourseService>();
 builder.Services.AddScoped<CourseSessionService>();
-
+builder.Services.AddScoped<LocationService>();
 
 //Repos
 builder.Services.AddScoped<ICourseRepository, CourseRepository>();
 builder.Services.AddScoped<ICourseSessionRepository, CourseSessionRepository>();
+builder.Services.AddScoped<ILocationRepository, LocationRepository>();
 
 
 builder.Services.AddOpenApi();
@@ -118,6 +120,56 @@ coursesSessions.MapGet("/{id}", async (int id, CourseSessionService service, Can
 #endregion
 
 
+
+#region
+
+var locations = app.MapGroup("/api/locations").WithTags("Locations");
+
+locations.MapGet("/", async (LocationService service, CancellationToken ct) =>
+{
+    var result = await service.GetAllLocationsAsync(ct);
+    return Results.Ok(result);
+});
+
+locations.MapGet("/{id:int}", async (int id, LocationService service, CancellationToken ct) =>
+{
+    var result = await service.GetOneLocationAsync(id, ct);
+    return result.Match(
+        location => Results.Ok(location),
+        errors => errors.ToProblemDetails()
+    );
+});
+
+locations.MapPost("/", async (CreateLocationDto dto, LocationService service, CancellationToken ct) =>
+{
+    var result = await service.CreateLocationAsync(dto, ct);
+    return result.Match(
+        location => Results.Created($"/api/locations/{location.Id}", location),
+        errors => errors.ToProblemDetails()
+    );
+});
+
+locations.MapPut("/{id:int}", async (int id, UpdateLocationDto dto, LocationService service, CancellationToken ct) =>
+{
+    var result = await service.UpdateLocationAsync(id, dto, ct);
+    return result.Match(
+        location => Results.Ok(location),
+        errors => errors.ToProblemDetails()
+    );
+});
+
+locations.MapDelete("/{id:int}", async (int id, LocationService service, CancellationToken ct) =>
+{
+    var result = await service.DeleteLocationAsync(id, ct);
+    return result.Match(
+        _ => Results.NoContent(),
+        errors => errors.ToProblemDetails()
+    );
+});
+
+
+
+#endregion
 
 app.Run();
 
