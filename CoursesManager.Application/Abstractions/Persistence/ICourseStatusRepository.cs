@@ -2,6 +2,6 @@
 
 namespace CoursesManager.Application.Abstractions.Persistence;
 
-internal interface ICourseStatusRepository : IBaseRepository<CourseStatusEntity>
+public interface ICourseStatusRepository : IBaseRepository<CourseStatusEntity>
 {
 }
