@@ -3,6 +3,7 @@ using CoursesManager.Application.Dtos.CourseRegistrations;
 using CoursesManager.Application.Dtos.Courses;
 using CoursesManager.Application.Dtos.CourseSessions;
 using CoursesManager.Application.Dtos.CourseStatus;
+using CoursesManager.Application.Dtos.InstanceTeachers;
 using CoursesManager.Application.Dtos.Locations;
 using CoursesManager.Application.Dtos.Participants;
 using CoursesManager.Application.Dtos.Teachers;
@@ -25,6 +26,7 @@ builder.Services.AddScoped<TeacherService>();
 builder.Services.AddScoped<ParticipantService>();
 builder.Services.AddScoped<CourseStatusService>();
 builder.Services.AddScoped<CourseRegistrationService>();
+builder.Services.AddScoped<InstanceTeacherService>();
 
 //Repos
 builder.Services.AddScoped<ICourseRepository, CourseRepository>();
@@ -34,6 +36,7 @@ builder.Services.AddScoped<ITeacherRepository, TeacherRepository>();
 builder.Services.AddScoped<IParticipantRepository, ParticipantRepository>();
 builder.Services.AddScoped<ICourseStatusRepository, CourseStatusRepository>();
 builder.Services.AddScoped<ICourseRegistrationRepository, CourseRegistrationRepository>();
+builder.Services.AddScoped<IInstanceTeacherRepository, InstanceTeacherRepository>();
 
 
 builder.Services.AddOpenApi();
@@ -403,6 +406,42 @@ registrations.MapPut("/{id:int}", async (int id, UpdateCourseRegistrationDto dto
 registrations.MapDelete("/{id:int}", async (int id, CourseRegistrationService service, CancellationToken ct) =>
 {
     var result = await service.DeleteCourseRegistrationAsync(id, ct);
+    return result.Match(
+        _ => Results.NoContent(),
+        errors => errors.ToProblemDetails()
+    );
+});
+
+#endregion
+
+#region InstanceTeachers
+
+var instanceTeachers = app.MapGroup("/api/instance-teachers").WithTags("Instance Teachers");
+
+instanceTeachers.MapGet("/", async (InstanceTeacherService service, CancellationToken ct) =>
+{
+    var rows = await service.GetAllAsync(ct);
+    return Results.Ok(rows);
+});
+
+instanceTeachers.MapGet("/by-course-session/{courseSessionId:int}", async (int courseSessionId, InstanceTeacherService service, CancellationToken ct) =>
+{
+    var rows = await service.GetByCourseSessionAsync(courseSessionId, ct);
+    return Results.Ok(rows);
+});
+
+instanceTeachers.MapPost("/", async (CreateInstanceTeacherDto dto, InstanceTeacherService service, CancellationToken ct) =>
+{
+    var result = await service.AssignTeacherAsync(dto, ct);
+    return result.Match(
+        row => Results.Created($"/api/instance-teachers/{row.CourseSessionId}/{row.TeacherId}", row),
+        errors => errors.ToProblemDetails()
+    );
+});
+
+instanceTeachers.MapDelete("/{courseSessionId:int}/{teacherId:int}", async (int courseSessionId, int teacherId, InstanceTeacherService service, CancellationToken ct) =>
+{
+    var result = await service.UnassignTeacherAsync(courseSessionId, teacherId, ct);
     return result.Match(
         _ => Results.NoContent(),
         errors => errors.ToProblemDetails()
