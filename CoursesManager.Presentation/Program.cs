@@ -121,8 +121,8 @@ courses.MapDelete("/{courseCode}", async (string courseCode, CourseService cours
 
 #region CourseSessions
 
-var courseSessions = app.MapGroup("/api/course-sessions")
-    .WithTags("Course Sessions");
+var courseSessions = app.MapGroup("/api/course-sessions").WithTags("Course Sessions");
+
 
 courseSessions.MapGet("/", async (CourseSessionService service, CancellationToken ct) =>
 {
