@@ -11,6 +11,7 @@ using CoursesManager.Application.Services;
 using CoursesManager.Infrastructure.Data;
 using CoursesManager.Infrastructure.Persistence.Repositories;
 using CoursesManager.Presentation.Extensions;
+using CoursesManager.Presentation.Middlewares;
 using EntityFramework.Exceptions.SqlServer;
 using Microsoft.EntityFrameworkCore;
 
@@ -55,8 +56,10 @@ builder.Services.AddProblemDetails(options =>
     };
 });
 
-var app = builder.Build();
+builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
 
+var app = builder.Build();
+app.UseExceptionHandler();
 
 if (app.Environment.IsDevelopment())
 {
@@ -68,9 +71,9 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 
-//Cors
 
-app.UseExceptionHandler();
+
+
 
 #region Courses
 var courses = app.MapGroup("/api/courses").WithTags("Courses");
