@@ -17,16 +17,15 @@ public class CourseRegistrationService(ICourseRegistrationRepository repo)
         if (exists)
             return Error.Conflict("CourseRegistration.Conflict", "Participant is already registered for this course session.");
 
-        var entity = new CourseRegistrationEntity
+        var saved = await _repo.CreateAsync(new CourseRegistrationEntity
         {
-            CourseSessionId = dto.CourseSessionId,
             ParticipantId = dto.ParticipantId,
+            CourseSessionId = dto.CourseSessionId,
             CourseStatusId = dto.CourseStatusId,
-            RegistrationDate = dto.RegistrationDate ?? DateTime.UtcNow,
             UpdatedAt = DateTime.UtcNow
-        };
+            
+        }, ct);
 
-        var saved = await _repo.CreateAsync(entity, ct);
         return CourseRegistrationMapper.ToCourseRegistrationDto(saved);
     }
 
@@ -54,16 +53,32 @@ public class CourseRegistrationService(ICourseRegistrationRepository repo)
 
     public async Task<ErrorOr<CourseRegistrationDto>> UpdateCourseRegistrationAsync(int id, UpdateCourseRegistrationDto dto, CancellationToken ct = default)
     {
-        var reg = await _repo.GetOneAsync(r => r.Id == id, ct);
-        if (reg is null)
+        var entity = await _repo.GetOneAsync(x => x.Id == id, ct);
+        if (entity is null)
             return Error.NotFound("CourseRegistration.NotFound", $"CourseRegistration with id '{id}' was not found.");
 
-        reg.CourseStatusId = dto.CourseStatusId;
-        reg.UpdatedAt = DateTime.UtcNow;
+        var duplicate = await _repo.ExistAsync(x =>
+            x.Id != id &&
+            x.ParticipantId == dto.ParticipantId &&
+            x.CourseSessionId == dto.CourseSessionId);
+
+        if (duplicate)
+            return Error.Conflict(
+                "CourseRegistration.Conflict",
+                "Participant is already registered for this course session."
+            );
+
+        entity.ParticipantId = dto.ParticipantId;
+        entity.CourseSessionId = dto.CourseSessionId;
+        entity.CourseStatusId = dto.CourseStatusId;
+
+        
+        entity.UpdatedAt = DateTime.UtcNow;
 
         await _repo.SaveChangesAsync(ct);
-        return CourseRegistrationMapper.ToCourseRegistrationDto(reg);
+        return CourseRegistrationMapper.ToCourseRegistrationDto(entity);
     }
+
 
     public async Task<ErrorOr<Deleted>> DeleteCourseRegistrationAsync(int id, CancellationToken ct = default)
     {
