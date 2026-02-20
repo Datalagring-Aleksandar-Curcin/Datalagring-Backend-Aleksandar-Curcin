@@ -2,10 +2,14 @@
 
 namespace CoursesManager.Application.Dtos.Courses;
 
-public record UpdateCourseDto(
-    [Required, MinLength(1), MaxLength(50)] string Title,
-    [Required, MinLength(1), MaxLength(200)] string Description,
-    [Required] byte[] RowVersion
-);
+public class UpdateCourseDto
+{
+    [Required, MinLength(1), MaxLength(50)]
+    public string Title { get; set; } = null!;
 
+    [Required, MinLength(1), MaxLength(200)]
+    public string Description { get; set; } = null!;
 
+    [Required]
+    public byte[] RowVersion { get; set; } = [];
+}
