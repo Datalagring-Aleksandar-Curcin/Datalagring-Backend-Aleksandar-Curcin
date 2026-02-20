@@ -6,7 +6,7 @@ using System.Linq.Expressions;
 
 namespace CoursesManager.Application.Mappers;
 
-public class CourseSessionMapper
+public static class CourseSessionMapper
 {
 
     public static Expression<Func<CourseSessionEntity, CourseSessionDto>> ToCourseSessionDtoExpr =>
@@ -18,6 +18,7 @@ public class CourseSessionMapper
             cs.CreatedAt,
             cs.UpdatedAt,
             new CourseDto(
+                cs.Course.CourseId,
                 cs.Course.CourseCode,
                 cs.Course.Title,
                 cs.Course.Description,
@@ -44,6 +45,7 @@ public class CourseSessionMapper
         entity.UpdatedAt,
         new CourseDto
         (
+            entity.Course.CourseId,
             entity.Course.CourseCode,
             entity.Course.Title,
             entity.Course.Description,
