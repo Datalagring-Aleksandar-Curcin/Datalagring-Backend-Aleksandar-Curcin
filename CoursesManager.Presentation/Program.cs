@@ -368,42 +368,42 @@ courseStatuses.MapDelete("/{id:int}", async (int id, CourseStatusService service
 
 #region CourseRegistrations
 
-var registrations = app.MapGroup("/api/course-registrations").WithTags("Course Registrations");
+var courseRegistrations = app.MapGroup("/api/course-registrations").WithTags("Course Registrations");
 
-registrations.MapGet("/", async (CourseRegistrationService service, CancellationToken ct) =>
+courseRegistrations.MapGet("/", async (CourseRegistrationService service, CancellationToken ct) =>
 {
-    var result = await service.GetAllCourseRegistrationsAsync(ct);
-    return Results.Ok(result);
+    var rows = await service.GetAllCourseRegistrationsAsync(ct);
+    return Results.Ok(rows);
 });
 
-registrations.MapGet("/{id:int}", async (int id, CourseRegistrationService service, CancellationToken ct) =>
+courseRegistrations.MapGet("/{id:int}", async (int id, CourseRegistrationService service, CancellationToken ct) =>
 {
     var result = await service.GetOneCourseRegistrationAsync(id, ct);
     return result.Match(
-        r => Results.Ok(r),
+        row => Results.Ok(row),
         errors => errors.ToProblemDetails()
     );
 });
 
-registrations.MapPost("/", async (CreateCourseRegistrationDto dto, CourseRegistrationService service, CancellationToken ct) =>
+courseRegistrations.MapPost("/", async (CreateCourseRegistrationDto dto, CourseRegistrationService service, CancellationToken ct) =>
 {
     var result = await service.CreateCourseRegistrationAsync(dto, ct);
     return result.Match(
-        r => Results.Created($"/api/course-registrations/{r.Id}", r),
+        row => Results.Created($"/api/course-registrations/{row.Id}", row),
         errors => errors.ToProblemDetails()
     );
 });
 
-registrations.MapPut("/{id:int}", async (int id, UpdateCourseRegistrationDto dto, CourseRegistrationService service, CancellationToken ct) =>
+courseRegistrations.MapPut("/{id:int}", async (int id, UpdateCourseRegistrationDto dto, CourseRegistrationService service, CancellationToken ct) =>
 {
     var result = await service.UpdateCourseRegistrationAsync(id, dto, ct);
     return result.Match(
-        r => Results.Ok(r),
+        row => Results.Ok(row),
         errors => errors.ToProblemDetails()
     );
 });
 
-registrations.MapDelete("/{id:int}", async (int id, CourseRegistrationService service, CancellationToken ct) =>
+courseRegistrations.MapDelete("/{id:int}", async (int id, CourseRegistrationService service, CancellationToken ct) =>
 {
     var result = await service.DeleteCourseRegistrationAsync(id, ct);
     return result.Match(
