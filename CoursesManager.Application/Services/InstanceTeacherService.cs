@@ -37,7 +37,7 @@ public class InstanceTeacherService(IInstanceTeacherRepository repo)
 
     public async Task<IReadOnlyList<InstanceTeacherDto>> GetByCourseSessionAsync(int courseSessionId, CancellationToken ct = default)
     {
-        return await repo.GetAllAsync(
+        return await _repo.GetAllAsync(
             select: InstanceTeacherMapper.ToInstanceTeacherDtoExpr,
             where: x => x.CourseSessionId == courseSessionId,
             orderBy: q => q.OrderBy(x => x.TeacherId),
