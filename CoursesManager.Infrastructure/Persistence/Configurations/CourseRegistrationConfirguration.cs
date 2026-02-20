@@ -12,6 +12,10 @@ internal class CourseRegistrationConfirguration : IEntityTypeConfiguration<Cours
 
         builder.HasKey(x => x.Id);
 
+        builder.HasIndex(x => new { x.ParticipantId, x.CourseSessionId })
+            .IsUnique()
+            .HasDatabaseName("UQ_CourseRegistration_Participant_Session");
+
         builder.Property(x => x.RegistrationDate)
             .HasColumnType("datetime2(0)")
             .HasDefaultValueSql("SYSUTCDATETIME()");
@@ -19,7 +23,6 @@ internal class CourseRegistrationConfirguration : IEntityTypeConfiguration<Cours
         builder.Property(x => x.UpdatedAt)
             .HasColumnType("datetime2(0)")
             .HasDefaultValueSql("SYSUTCDATETIME()");
-
 
         builder.HasOne(x => x.Participants)
             .WithMany(p => p.CourseRegistrations)
