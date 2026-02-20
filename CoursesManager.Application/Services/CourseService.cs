@@ -25,16 +25,17 @@ public class CourseService(ICourseRepository courseRepository)
     public async Task<ErrorOr<CourseDto>> GetOneCourseAsync(string courseCode, CancellationToken ct = default)
     {
         var course = await _courseRepository.GetOneAsync(x => x.CourseCode == courseCode, ct);
-        return course is not null
-            ? CourseMapper.ToCourseDto(course)
-            : Error.NotFound("Courses.NotFound", $"Course with '{courseCode}' was not found.");
+        return course is null
+            ? Error.NotFound("Courses.NotFound", $"Course with '{courseCode}' was not found.")
+            : CourseMapper.ToCourseDto(course);
+            
     }
 
     public async Task<IReadOnlyList<CourseDto>> GetAllCoursesAsync(CancellationToken ct = default)
     {
         return await _courseRepository.GetAllAsync(
-            select: c => new CourseDto(c.CourseCode, c.Title, c.Description, c.CreatedAt, c.UpdatedAt, c.RowVersion),
-            orderBy: o => o.OrderByDescending(x => x.CreatedAt),
+            select: CourseMapper.ToCourseDtoExpr,
+            orderBy: q => q.OrderByDescending(x => x.CreatedAt),
             ct: ct
         );
     }
