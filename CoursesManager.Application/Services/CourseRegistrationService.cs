@@ -34,6 +34,7 @@ public class CourseRegistrationService(ICourseRegistrationRepository repo)
         var reg = await _repo.GetOneAsync(
             where: r => r.Id == id,
             select: CourseRegistrationMapper.ToCourseRegistrationDtoExpr,
+            includes: r => r.CourseStatus,
             ct: ct
         );
 
@@ -47,7 +48,8 @@ public class CourseRegistrationService(ICourseRegistrationRepository repo)
         return await _repo.GetAllAsync(
             select: CourseRegistrationMapper.ToCourseRegistrationDtoExpr,
             orderBy: q => q.OrderByDescending(r => r.RegistrationDate),
-            ct: ct
+            ct: ct,
+            includes: r => r.CourseStatus
         );
     }
 

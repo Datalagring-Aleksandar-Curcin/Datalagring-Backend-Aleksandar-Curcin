@@ -41,7 +41,8 @@ public class BaseRepository<TEntity> : IBaseRepository<TEntity> where TEntity : 
         Expression<Func<TEntity, bool>> where,
         Expression<Func<TEntity, TSelect>> select,
         bool tracking = false,
-        CancellationToken ct = default)
+        CancellationToken ct = default,
+        params Expression<Func<TEntity, object>>[] includes)
     {
         return await _table
             .AsNoTracking()

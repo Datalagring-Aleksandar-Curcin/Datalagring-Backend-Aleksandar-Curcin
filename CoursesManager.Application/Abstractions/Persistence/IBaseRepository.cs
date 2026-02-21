@@ -20,7 +20,8 @@ namespace CoursesManager.Application.Abstractions.Persistence
         Expression<Func<TEntity, bool>> where,
         Expression<Func<TEntity, TSelect>> select,
         bool tracking = false,
-        CancellationToken ct = default);
+        CancellationToken ct = default,
+        params Expression<Func<TEntity, object>>[] includes);
 
         Task<IReadOnlyList<TEntity>> GetAllAsync(
         Expression<Func<TEntity, bool>>? where = null,

@@ -6,5 +6,6 @@ public record CourseRegistrationDto(
     DateTime UpdatedAt,
     int CourseSessionId,
     int ParticipantId,
-    int CourseStatusId
+    int CourseStatusId,
+    string StatusType
 );

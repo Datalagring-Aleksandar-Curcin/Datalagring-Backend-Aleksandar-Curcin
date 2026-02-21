@@ -13,7 +13,8 @@ public static class CourseRegistrationMapper
             r.UpdatedAt,
             r.CourseSessionId,
             r.ParticipantId,
-            r.CourseStatusId
+            r.CourseStatusId,
+            r.CourseStatus.StatusType
         );
 
     public static CourseRegistrationDto ToCourseRegistrationDto(CourseRegistrationEntity entity) =>
@@ -23,6 +24,7 @@ public static class CourseRegistrationMapper
             entity.UpdatedAt, 
             entity.CourseSessionId, 
             entity.ParticipantId, 
-            entity.CourseStatusId
+            entity.CourseStatusId,
+            entity.CourseStatus.StatusType
         );
 }
