@@ -1,6 +1,6 @@
 # CoursesManager (Data Storage Assignment)
 
-This project is a course management system that manages courses, course sessions, teachers, participants, course status, instance teachers locations and course registrations using a normalized relational database (EF Core Code First). The solution follows Clean Architecture / DDD and is structured into Presentation, Application, Domain and Infrastructure.
+This project is a course management system that manages courses, course sessions, teachers, participants, course status, instance teachers, locations and course registrations using a normalized relational database (EF Core Code First). The solution follows Clean Architecture / DDD and is structured into Presentation, Application, Domain and Infrastructure.
 
 ## Tech Stack
 - ASP.NET Core Minimal API
