@@ -29,7 +29,8 @@ public static class ErrorOrExtension
     private static int MapErrorTypeToStatusCode(ErrorType errorType) =>
         errorType switch
         {
-            ErrorType.NotFound => StatusCodes.Status400BadRequest,
+            ErrorType.Validation => StatusCodes.Status400BadRequest,
+            ErrorType.NotFound => StatusCodes.Status404NotFound,
             ErrorType.Conflict => StatusCodes.Status409Conflict,
             _ => StatusCodes.Status500InternalServerError
         };

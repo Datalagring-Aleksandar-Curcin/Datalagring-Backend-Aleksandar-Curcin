@@ -1,31 +1,35 @@
 ﻿using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 
-namespace CoursesManager.Presentation.Middlewares
+namespace CoursesManager.Presentation.Middlewares;
+
+public class GlobalExceptionHandler : IExceptionHandler
 {
-    public class GlobalExceptionHandler : IExceptionHandler
+    public async ValueTask<bool> TryHandleAsync(HttpContext httpContext, Exception exception, CancellationToken cancellationToken)
     {
-        public async ValueTask<bool> TryHandleAsync(HttpContext httpContext, Exception exception, CancellationToken cancellationToken)
+        var (status, title, detail) = exception switch
         {
-            //logger
+            DbUpdateException { InnerException: SqlException sql } when sql.Number == 547
+                => (StatusCodes.Status409Conflict, "Conflict", "Cannot delete this resource because it is referenced by other data."),
 
-            httpContext.Response.StatusCode = exception switch
+            _ => (StatusCodes.Status500InternalServerError, "Server Error", "An unexpected error occurred. Please try again.")
+        };
+
+        httpContext.Response.StatusCode = status;
+
+        return await httpContext.RequestServices
+            .GetRequiredService<IProblemDetailsService>()
+            .TryWriteAsync(new ProblemDetailsContext
             {
-                _ => StatusCodes.Status500InternalServerError
-            };
-
-            return await httpContext.RequestServices
-                .GetRequiredService<IProblemDetailsService>()
-                .TryWriteAsync(new ProblemDetailsContext
+                HttpContext = httpContext,
+                ProblemDetails = new ProblemDetails
                 {
-                    HttpContext = httpContext,
-                    ProblemDetails = new ProblemDetails
-                    {
-                        Title = "Server Error",
-                        Detail = "An unexpected error occured. Please try again"
-                    }
-                });
-        }
+                    Title = title,
+                    Detail = detail,
+                    Status = status
+                }
+            });
     }
 }
