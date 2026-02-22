@@ -11,7 +11,7 @@ This project is a course management system that manages courses, course sessions
 - Windows + SQL Server LocalDB installed
 - .NET SDK (same version as the project)
 
-## Option C: Run Locally via Terminal
+## Option A: Run Locally via Terminal
 
 1) Clone and build
 git clone <REPO_URL>
